@@ -66,6 +66,7 @@ using namespace facebook::react;
         _destinationIndex = -1;
         _layoutDirection = @"ltr";
         _overdrag = NO;
+        _disableRightScroll = NO;
         UIPanGestureRecognizer* panGestureRecognizer = [UIPanGestureRecognizer new];
         self.panGestureRecognizer = panGestureRecognizer;
         panGestureRecognizer.delegate = self;
@@ -162,6 +163,10 @@ using namespace facebook::react;
     
     if (newScreenProps.overdrag != _overdrag) {
         _overdrag = newScreenProps.overdrag;
+    }
+
+    if (newScreenProps.disableRightScroll != _disableRightScroll) {
+        _disableRightScroll = newScreenProps.disableRightScroll;
     }
     
     [super updateProps:props oldProps:oldProps];

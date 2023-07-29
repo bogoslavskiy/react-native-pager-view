@@ -46,6 +46,7 @@
         _eventDispatcher = eventDispatcher;
         _cachedControllers = [NSHashTable hashTableWithOptions:NSHashTableStrongMemory];
         _overdrag = NO;
+        _disableRightScroll = NO;
         _layoutDirection = @"ltr";
         UIPanGestureRecognizer* panGestureRecognizer = [UIPanGestureRecognizer new];
         self.panGestureRecognizer = panGestureRecognizer;
@@ -428,7 +429,12 @@
     if (!_overdrag) {
         NSInteger maxIndex = self.reactSubviews.count - 1;
         NSInteger firstPageIndex = [self isLtrLayout] ?  0 :  maxIndex;
-        NSInteger lastPageIndex = [self isLtrLayout] ?  maxIndex :  0;
+        NSInteger lastPageIndex = [self isLtrLayout] ? maxIndex :  0;
+
+        if (_disableRightScroll && scrollView.isDragging) {
+            lastPageIndex = _currentIndex;
+        }
+
         BOOL isFirstPage = _currentIndex == firstPageIndex;
         BOOL isLastPage = _currentIndex == lastPageIndex;
         CGFloat contentOffset =[self isHorizontal] ? scrollView.contentOffset.x : scrollView.contentOffset.y;
